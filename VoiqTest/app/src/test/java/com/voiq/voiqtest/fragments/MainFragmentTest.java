@@ -20,7 +20,6 @@ import com.voiq.voiqtest.eventbus.LogInRequest;
 import com.voiq.voiqtest.eventbus.LogInSuccess;
 import com.voiq.voiqtest.eventbus.NetworkError;
 import com.voiq.voiqtest.modules.ApiModule;
-import com.voiq.voiqtest.util.TestUtilities;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -118,7 +117,7 @@ public class MainFragmentTest {
     @Test
     public void shouldToastForEmptyEmail() throws Exception {
         btnLogin.performClick();
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(TestUtilities.getStringById(
+        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_email, activity)));
     }
 
@@ -126,7 +125,7 @@ public class MainFragmentTest {
     public void shouldToastOnInvalidEmail() throws Exception {
         txtMail.setText("aaaa");
         btnLogin.performClick();
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(TestUtilities.getStringById(
+        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.invalid_email, activity)));
     }
 
@@ -134,7 +133,7 @@ public class MainFragmentTest {
     public void shouldToastOnEmptyPassword() throws Exception {
         txtMail.setText("a@b.com");
         btnLogin.performClick();
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(TestUtilities.getStringById(
+        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_pass, activity)));
     }
 

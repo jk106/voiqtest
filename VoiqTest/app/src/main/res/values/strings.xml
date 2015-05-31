@@ -13,18 +13,24 @@
     <string name="not_agent">Not an agent?</string>
     <string name="apply_here"><u>Apply Here</u></string>
     <string name="first_name">First Name</string>
+    <string name="empty_fn">Please enter your first name</string>
     <string name="asterisk">*</string>
     <string name="phone">Phone</string>
+    <string name="empty_phone">Please enter your phone number</string>
     <string name="last_name">Last Name</string>
+    <string name="empty_ln">Please enter your last name</string>
     <string name="email">Email</string>
     <string name="zip_code">Zip Code</string>
+    <string name="empty_zc">Please enter your zip code</string>
     <string name="birth_date">Birth Date</string>
+    <string name="empty_bd">Please select your birth date</string>
     <string name="register">Register</string>
     <string name="select_date">Select Date</string>
     <string name="device">Device:</string>
     <string name="android">Android</string>
     <string name="ios">iOS</string>
     <string name="pass_confirm">Confirm Password</string>
+    <string name="empty_confirm">Please confirm your password</string>
     <string name="your_token">Your Token Is:</string>
     <string name="logout">Log Out</string>
     <string name="empty_email">Please enter your e-mail address</string>
@@ -33,7 +39,9 @@
     <string name="please_wait">Please wait&#8230;</string>
     <string name="logging_in">Logging In</string>
     <string name="error">Error</string>
-    <string name="network_error">The VOIQ Server could not be reached. Please check your Internet connection and try again.</string>
+    <string name="network_error">The Voiq Server could not be reached. Please check your Internet connection and try again.</string>
     <string name="ok">Ok</string>
+    <string name="password_mismatch">The passwords do not match</string>
+    <string name="registering">Registering in Voiq</string>
 
 </resources>
