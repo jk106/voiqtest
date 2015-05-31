@@ -4,7 +4,28 @@
     <string name="app_name">VoiqTest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_register">Register</string>
     <string name="title_activity_token">TokenActivity</string>
+    <string name="email_hint">ricardo@voiq.com</string>
+    <string name="pass_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="not_agent">Not an agent?</string>
+    <string name="apply_here"><u>Apply Here</u></string>
+    <string name="first_name">First Name</string>
+    <string name="asterisk">*</string>
+    <string name="phone">Phone</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="register">Register</string>
+    <string name="select_date">Select Date</string>
+    <string name="device">Device:</string>
+    <string name="android">Android</string>
+    <string name="ios">iOS</string>
+    <string name="pass_confirm">Confirm Password</string>
+    <string name="your_token">Your Token Is:</string>
+    <string name="logout">Log Out</string>
 
 </resources>

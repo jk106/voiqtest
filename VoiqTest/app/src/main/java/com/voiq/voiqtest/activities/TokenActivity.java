@@ -2,17 +2,27 @@ package com.voiq.voiqtest.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.voiq.voiqtest.R;
 
-public class TokenActivity extends ActionBarActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
+public class TokenActivity extends AppCompatActivity {
+
+    @InjectView(R.id.txtToken)
+    EditText txtToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
+        ButterKnife.inject(this);
     }
 
     @Override
@@ -35,5 +45,11 @@ public class TokenActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.btnLogout)
+    public void onLogoutClick()
+    {
+
     }
 }

@@ -4,9 +4,45 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#FFF"
     tools:context="com.voiq.voiqtest.activities.TokenActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imgLogo"
+        android:src="@drawable/voiq_logo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imgLogo"
+        android:layout_marginTop="60dp"
+        android:id="@+id/lblToken"
+        android:text="@string/your_token"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_below="@id/lblToken"
+        android:id="@+id/txtToken"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:enabled="false"
+        android:background="@drawable/border_register_field"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="@string/logout"
+        android:id="@+id/btnLogout"
+        android:background="@color/ForestGreen"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFF"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

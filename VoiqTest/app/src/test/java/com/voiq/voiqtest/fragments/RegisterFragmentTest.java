@@ -1,22 +1,21 @@
-package com.voiq.voiqtest;
+package com.voiq.voiqtest.fragments;
 
-import org.robolectric.RobolectricGradleTestRunner;
+import com.voiq.voiqtest.BuildConfig;
+
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowAlertDialog;
 
 /**
  * Created by juanchaparro on 30/05/15.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class MainActivityTest{
+public class RegisterFragmentTest {
 
     @Before
     public void setUp() throws Exception {
