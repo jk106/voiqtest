@@ -9,6 +9,8 @@ Here are some of the libraries I used, and why did I used them.
 ### Retrofit
 Retrofit allows to create quick, simple and efficient REST clients. I created one for the API requests, using POJO's to serialize the responses. Since they were coming in JSON format, I used GSON serializer, which is the default setting for Retrofit. I would have used the same for the requests, but they were only working with URL-Encoded parameters.
 
+Though creating the classes for the GSON serializing might seem like overkill for the exercise, I wanted to code it in a way that was scalable for the future, I like to use the separate classes to keep the requests contained in a single package and being able to call them and modify them easily, not fearing that anything else might break in the UI code. Keep in mind as well, that some of these POJO's might as well be thought as models, depending on the business logic.
+
 ### Otto
 Right now, the app only works in portrait orientation, as there were no designs for landscape. However, there may be designs for it in the future, so I used an architecture that allowed the developers to add the orientation without concerns about orientation changes.
 
