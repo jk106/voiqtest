@@ -4,7 +4,7 @@ This is my solution for the VOIQ test exercise. Following the instructions, here
 
 Libraries
 ---------
-Here are some of the libraries I used, and why did I do it
+Here are some of the libraries I used, and why did I used them.
 
 ### Retrofit
 Retrofit allows to create quick, simple and efficient REST clients. I created one for the API requests, using POJO's to serialize the responses. Since they were coming in JSON format, I used GSON serializer, which is the default setting for Retrofit. I would have used the same for the requests, but they were only working with URL-Encoded parameters.
@@ -12,7 +12,7 @@ Retrofit allows to create quick, simple and efficient REST clients. I created on
 ### Otto
 Right now, the app only works in portrait orientation, as there were no designs for landscape. However, there may be designs for it in the future, so I used an architecture that allowed the developers to add the orientation without concerns about orientation changes.
 
-Enter Otto, an Event Bus that allows to avoid the issues with AsyncTasks and IntentServices for API calls, and other multi-thread scenarios. Using a simple, annotation-based system of subscriptions to events, Otto allows the communication between threads, without excessive boilerplate, or leakages. Otto+Retrofit powers the Asynchronous requests for the app.
+Enter Otto, an Event Bus that allows to avoid the issues with AsyncTasks and IntentServices for API calls, and other multi-thread scenarios. Using a simple, annotation-based system of subscriptions to events, Otto allows the communication between threads, without excessive boilerplate, or leakages. Otto+Retrofit power the Asynchronous requests for the app.
 
 ### Dagger
 Dagger is a DI library that helps to keep everything uncoupled and helps to make the testing process a lot easier. I use it here to forget about hidden dependencies and keep the architecture clean. It also allows me to validate the UI behavior (fragments, activities, etc.) in isolation.
