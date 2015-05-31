@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.voiq.voiqtest.fragments.MainFragment"
+        android:id="@+id/mainFragment"
         tools:layout="@layout/fragment_main" />
 
 </FrameLayout>

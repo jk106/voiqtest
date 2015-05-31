@@ -27,5 +27,11 @@
     <string name="pass_confirm">Confirm Password</string>
     <string name="your_token">Your Token Is:</string>
     <string name="logout">Log Out</string>
+    <string name="empty_email">Please enter your e-mail address</string>
+    <string name="invalid_email">Please enter a valid e-mail address</string>
+    <string name="empty_pass">Please enter your password</string>
+    <string name="please_wait">Please wait&#8230;</string>
+    <string name="logging_in">Logging In</string>
+    <string name="network_error">The VOIQ Server could not be reached. Please check your Internet connection and try again.</string>
 
 </resources>
