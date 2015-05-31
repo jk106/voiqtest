@@ -23,7 +23,7 @@ public class ApiService {
     public ApiService(VoiqEndpoints endpoints, Bus bus)
     {
         mEndpoints=endpoints;
-        bus=mBus;
+        mBus=bus;
     }
 
     @Subscribe

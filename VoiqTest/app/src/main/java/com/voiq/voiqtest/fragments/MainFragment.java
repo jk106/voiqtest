@@ -1,6 +1,9 @@
 package com.voiq.voiqtest.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,14 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.voiq.voiqtest.R;
+import com.voiq.voiqtest.activities.RegisterActivity;
+import com.voiq.voiqtest.activities.TokenActivity;
 import com.voiq.voiqtest.app.VoiqTestApplication;
 import com.voiq.voiqtest.eventbus.LogInRequest;
 import com.voiq.voiqtest.eventbus.LogInSuccess;
+import com.voiq.voiqtest.eventbus.NetworkError;
 
 import javax.inject.Inject;
 
@@ -37,6 +44,9 @@ public class MainFragment extends Fragment {
     @InjectView(R.id.btnLogin)
     Button btnLogin;
 
+    @InjectView(R.id.lblApply)
+    TextView lblApply;
+
     @Inject
     Bus mBus;
 
@@ -57,6 +67,18 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((VoiqTestApplication)(getActivity().getApplication())).getObjectGraph().inject(this);
+        if(savedInstanceState!=null && savedInstanceState.getBoolean("pd"))
+            pd= ProgressDialog.show(getActivity(), getString(R.string.logging_in),
+                    getString(R.string.please_wait));
+    }
+
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        if(pd!=null&& pd.isShowing()) {
+            pd.dismiss();
+            outState.putBoolean("pd", true);
+        }
     }
 
     @Override
@@ -99,12 +121,39 @@ public class MainFragment extends Fragment {
     @Subscribe
     public void onLogInSuccess(LogInSuccess event)
     {
+        if(pd!=null && pd.isShowing())
+            pd.dismiss();
+        if(event.getResponse().getStatus().equalsIgnoreCase(getString(R.string.error)))
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+            builder.setPositiveButton(getString(R.string.ok), null);
+            builder.setMessage(event.getResponse().getText());
+            builder.setTitle(event.getResponse().getStatus());
+            builder.create().show();
+        }
+        else
+        {
+            Intent intent = new Intent(getActivity(), TokenActivity.class);
+            intent.putExtra("token", event.getResponse().getToken());
+            startActivity(intent);
+        }
+    }
 
+    @Subscribe
+    public void onNetworkError(NetworkError event)
+    {
+        if(pd!=null && pd.isShowing())
+            pd.dismiss();
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton(getString(R.string.ok), null);
+        builder.setMessage(getString(R.string.network_error));
+        builder.setTitle(getString(R.string.error));
+        builder.create().show();
     }
 
     @OnClick(R.id.lblApply)
     public void onApplyLabelClick()
     {
-
+        startActivity(new Intent(getActivity(), RegisterActivity.class));
     }
 }

@@ -5,12 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.voiq.voiqtest.BuildConfig;
 import com.voiq.voiqtest.R;
 import com.voiq.voiqtest.activities.MainActivity;
+import com.voiq.voiqtest.activities.RegisterActivity;
 import com.voiq.voiqtest.activities.TokenActivity;
 import com.voiq.voiqtest.api.LogInResponse;
 import com.voiq.voiqtest.app.VoiqTestApplication;
@@ -32,6 +34,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowProgressDialog;
 import org.robolectric.shadows.ShadowToast;
+import org.robolectric.util.ActivityController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +69,14 @@ public class MainFragmentTest {
     @InjectView(R.id.btnLogin)
     Button btnLogin;
 
+    @InjectView(R.id.lblApply)
+    TextView lblApply;
+
     @Inject
     Bus mBus;
     private MainActivity activity;
     private MainFragment fragment;
+    private ActivityController controller;
 
 
     @Module(injects = {MainFragmentTest.class, MainFragment.class, VoiqTestApplication.class},
@@ -96,7 +103,8 @@ public class MainFragmentTest {
         ObjectGraph og = ObjectGraph.create(getModules().toArray());
         og.inject(this);
         ((VoiqTestApplication) RuntimeEnvironment.application).setObjectGraph(og);
-        activity = Robolectric.buildActivity(MainActivity.class).create().start().resume().get();
+        controller=Robolectric.buildActivity(MainActivity.class).create().start();
+        activity = (MainActivity)controller.resume().get();
         fragment = (MainFragment) activity.getSupportFragmentManager().findFragmentById(R.id.mainFragment);
         ButterKnife.inject(this, fragment.getView());
     }
@@ -144,7 +152,8 @@ public class MainFragmentTest {
         txtMail.setText("aa@aa.com");
         txtPass.setText("1111");
         btnLogin.performClick();
-        activity.recreate();
+        controller.restart();
+        activity = (MainActivity)controller.resume().get();
         fragment = (MainFragment) activity.getSupportFragmentManager().findFragmentById(R.id.mainFragment);
         ProgressDialog pd = (ProgressDialog) ShadowProgressDialog.getLatestDialog();
         assertThat(pd, notNullValue());
@@ -177,12 +186,14 @@ public class MainFragmentTest {
         ProgressDialog pd = (ProgressDialog) ShadowProgressDialog.getLatestDialog();
         LogInSuccess lis = new LogInSuccess();
         LogInResponse lir = new LogInResponse();
+        lir.setStatus("success");
         lir.setToken("aaa");
         lis.setResponse(lir);
         mBus.post(lis);
         assertThat(pd.isShowing(), equalTo(false));
         Intent intent = Shadows.shadowOf(activity).peekNextStartedActivity();
         assertThat(TokenActivity.class.getCanonicalName(), equalTo(intent.getComponent().getClassName()));
+        assertThat(intent.getStringExtra("token"), equalTo("aaa"));
     }
 
     @Test
@@ -201,5 +212,13 @@ public class MainFragmentTest {
         assertThat(alert, notNullValue());
         alert.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
         assertThat(alert.isShowing(), equalTo(false));
+    }
+
+    @Test
+    public void shouldStartRegisterActivityOnApplyHereClick()
+    {
+        lblApply.performClick();
+        Intent intent = Shadows.shadowOf(activity).peekNextStartedActivity();
+        assertThat(RegisterActivity.class.getCanonicalName(), equalTo(intent.getComponent().getClassName()));
     }
 }
