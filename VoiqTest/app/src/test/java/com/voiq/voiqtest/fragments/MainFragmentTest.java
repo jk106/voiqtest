@@ -46,7 +46,6 @@ import butterknife.InjectView;
 import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
-import retrofit.RetrofitError;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -54,10 +53,15 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Created by juanchaparro on 30/05/15.
+ * Test Suites for the MainFragment
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class MainFragmentTest {
+
+    /**
+     * Inject UI Elements from the fragment to use them on the tests
+     */
 
     @InjectView(R.id.txtMail)
     EditText txtMail;
@@ -71,13 +75,31 @@ public class MainFragmentTest {
     @InjectView(R.id.lblApply)
     TextView lblApply;
 
+    /**
+     * Inject the event bus, it will be needed for further assertions
+     */
     @Inject
     Bus mBus;
+
+    /**
+     * Activity instance
+     */
     private MainActivity activity;
+
+    /**
+     * UUT
+     */
     private MainFragment fragment;
+
+    /**
+     * Activity Controller instance
+     */
     private ActivityController controller;
 
 
+    /**
+     * Testing Module for the tests
+     */
     @Module(injects = {MainFragmentTest.class, MainFragment.class, VoiqTestApplication.class},
             overrides = true,
             complete = false
@@ -86,10 +108,15 @@ public class MainFragmentTest {
         @Provides
         @Singleton
         Bus provideBus() {
+            //Provide a partial mock for the Event Bus
             return Mockito.spy(new Bus(ThreadEnforcer.ANY));
         }
     }
 
+    /**
+     * Modules List for the tests
+     * @return the list
+     */
     protected List<Object> getModules() {
         List<Object> result = new ArrayList<Object>();
         result.add(new ApiModule());
@@ -99,44 +126,61 @@ public class MainFragmentTest {
 
     @Before
     public void setUp() throws Exception {
+        //Create the object graph and replace the one from the Robolectric application
         ObjectGraph og = ObjectGraph.create(getModules().toArray());
         og.inject(this);
         ((VoiqTestApplication) RuntimeEnvironment.application).setObjectGraph(og);
+        //Get the instances and the UI elements
         controller=Robolectric.buildActivity(MainActivity.class).create().start();
         activity = (MainActivity)controller.resume().get();
         fragment = (MainFragment) activity.getSupportFragmentManager().findFragmentById(R.id.mainFragment);
         ButterKnife.inject(this, fragment.getView());
     }
 
+    /**
+     * Test that a toast is shown if the form is empty
+     */
     @Test
-    public void shouldToastOnEmptyForm() throws Exception {
+    public void shouldToastOnEmptyForm() {
         btnLogin.performClick();
         assertThat(ShadowToast.getLatestToast(), notNullValue());
     }
 
+    /**
+     * Test that the right message is shown in case there is no e-mail
+     */
     @Test
-    public void shouldToastForEmptyEmail() throws Exception {
+    public void shouldToastForEmptyEmail() {
         btnLogin.performClick();
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_email, activity)));
     }
 
+    /**
+     * Test that the right message is shown on invalid e-mail
+     */
     @Test
-    public void shouldToastOnInvalidEmail() throws Exception {
+    public void shouldToastOnInvalidEmail() {
         txtMail.setText("aaaa");
         btnLogin.performClick();
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.invalid_email, activity)));
     }
 
+    /**
+     * Test that the right message is shown on empty password
+     */
     @Test
-    public void shouldToastOnEmptyPassword() throws Exception {
+    public void shouldToastOnEmptyPassword() {
         txtMail.setText("a@b.com");
         btnLogin.performClick();
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_pass, activity)));
     }
 
+    /**
+     * Test that the progress dialog is shown if the log in form is correctly filled
+     */
     @Test
     public void shouldShowProgressDialogOnSubmit() {
         txtMail.setText("aa@aa.com");
@@ -146,6 +190,9 @@ public class MainFragmentTest {
         assertThat(pd, notNullValue());
     }
 
+    /**
+     * Test that the progress dialog is shown again on fragment recreation
+     */
     @Test
     public void shouldShowProgressDialogOnRestoreInstanceStateAfterSubmit() {
         txtMail.setText("aa@aa.com");
@@ -158,6 +205,9 @@ public class MainFragmentTest {
         assertThat(pd, notNullValue());
     }
 
+    /**
+     * Test that the log in request event is called after submitting the form
+     */
     @Test
     public void shouldCallLogInRequesOnFormSubmit() {
         txtMail.setText("aa@aa.com");
@@ -166,10 +216,12 @@ public class MainFragmentTest {
         Mockito.verify(mBus, Mockito.times(1)).post(Mockito.isA(LogInRequest.class));
     }
 
+    /**
+     * Test an alert dialog is shown on Network Error event
+     */
     @Test
     public void shouldShowDialogOnNetworkError() {
         NetworkError ne = new NetworkError();
-        ne.setError(RetrofitError.unexpectedError("", new Exception()));
         mBus.post(ne);
         AlertDialog alert = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(alert, notNullValue());
@@ -177,6 +229,9 @@ public class MainFragmentTest {
         assertThat(alert.isShowing(), equalTo(false));
     }
 
+    /**
+     * Test the Token Activity is started if the request success event has a token
+     */
     @Test
     public void shouldStartTokenActivityOnLoginSuccessWithToken() {
         txtMail.setText("aa@aa.com");
@@ -195,6 +250,9 @@ public class MainFragmentTest {
         assertThat(intent.getStringExtra("token"), equalTo("aaa"));
     }
 
+    /**
+     * Test an alert dialog is shown if a success event comes with no token and error status
+     */
     @Test
     public void shouldShowDialogOnLogInSuccessWithStatus() {
         txtMail.setText("aa@aa.com");
@@ -213,6 +271,9 @@ public class MainFragmentTest {
         assertThat(alert.isShowing(), equalTo(false));
     }
 
+    /**
+     * Test the register activity when the apply here label is clicked
+     */
     @Test
     public void shouldStartRegisterActivityOnApplyHereClick()
     {

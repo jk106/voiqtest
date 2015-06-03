@@ -23,6 +23,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:inputType="text"
+            android:imeOptions="actionNext"
             android:id="@+id/txtFirstName"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
@@ -46,6 +47,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/txtLastName"
             android:inputType="text"
+            android:imeOptions="actionNext"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
             android:layout_height="wrap_content" />
@@ -69,6 +71,7 @@
             android:id="@+id/txtEmail"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
+            android:imeOptions="actionNext"
             android:background="@drawable/border_register_field"
             android:layout_height="wrap_content" />
 
@@ -108,6 +111,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:id="@+id/txtZipCode"
+            android:imeOptions="actionNext"
             android:inputType="numberDecimal"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
@@ -131,6 +135,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/txtPhone"
             android:inputType="phone"
+            android:imeOptions="actionNext"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
             android:layout_height="wrap_content" />
@@ -172,6 +177,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:id="@+id/txtPassword"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
@@ -195,6 +201,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/txtPasswordConfirmation"
             android:inputType="textPassword"
+            android:imeOptions="actionDone"
             android:layout_width="match_parent"
             android:background="@drawable/border_register_field"
             android:layout_height="wrap_content" />

@@ -51,10 +51,15 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Created by juanchaparro on 30/05/15.
+ * Test Suites for the Register Fragment
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class RegisterFragmentTest {
+
+    /**
+     * Inject UI Elements from the fragment to use them on the tests
+     */
 
     @InjectView(R.id.txtFirstName)
     EditText txtFirstName;
@@ -83,13 +88,30 @@ public class RegisterFragmentTest {
     @InjectView(R.id.btnRegister)
     Button btnRegister;
 
+    /**
+     * Inject the event bus, it will be needed for further assertions
+     */
     @Inject
     Bus mBus;
+
+    /**
+     * Activity instance
+     */
     private RegisterActivity activity;
+
+    /**
+     * UUT
+     */
     private RegisterFragment fragment;
+
+    /**
+     * Activity Controller instance
+     */
     private ActivityController controller;
 
-
+    /**
+     * Testing Module for the tests
+     */
     @Module(injects = {RegisterFragmentTest.class, RegisterFragment.class, VoiqTestApplication.class},
             overrides = true,
             complete = false
@@ -98,10 +120,15 @@ public class RegisterFragmentTest {
         @Provides
         @Singleton
         Bus provideBus() {
+            //Provide a partial mock for the Event Bus
             return Mockito.spy(new Bus(ThreadEnforcer.ANY));
         }
     }
 
+    /**
+     * Modules List for the tests
+     * @return the list
+     */
     protected List<Object> getModules() {
         List<Object> result = new ArrayList<Object>();
         result.add(new ApiModule());
@@ -111,36 +138,50 @@ public class RegisterFragmentTest {
 
     @Before
     public void setUp() throws Exception {
+        //Create the object graph and replace the one from the Robolectric application
         ObjectGraph og = ObjectGraph.create(getModules().toArray());
         og.inject(this);
         ((VoiqTestApplication) RuntimeEnvironment.application).setObjectGraph(og);
+        //Get the instances and the UI elements
         controller = Robolectric.buildActivity(RegisterActivity.class).create().start();
         activity = (RegisterActivity) controller.resume().get();
         fragment = (RegisterFragment) activity.getSupportFragmentManager().findFragmentById(R.id.registerFragment);
         ButterKnife.inject(this, fragment.getView());
     }
 
+    /**
+     * Test that a toast is shown if the form is empty
+     */
     @Test
     public void shouldToastOnEmptyForm() throws Exception {
         btnRegister.performClick();
         assertThat(ShadowToast.getLatestToast(), notNullValue());
     }
 
+    /**
+     * Test that a toast is shown if there is no first name
+     */
     @Test
-    public void shouldToastForEmptyFirstName() throws Exception {
+    public void shouldToastForEmptyFirstName() {
         btnRegister.performClick();
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_fn, activity)));
     }
 
+    /**
+     * Test that a toast is shown if there is no last name
+     */
     @Test
-    public void shouldToastForEmptyLastName() throws Exception {
+    public void shouldToastForEmptyLastName() {
         txtFirstName.setText("a");
         btnRegister.performClick();
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(fragment.getString(
                 R.string.empty_ln, activity)));
     }
 
+    /**
+     * Test that the right message is shown in case there is no e-mail
+     */
     @Test
     public void shouldToastForEmptyEmail() throws Exception {
         txtFirstName.setText("a");
@@ -150,8 +191,11 @@ public class RegisterFragmentTest {
                 R.string.empty_email, activity)));
     }
 
+    /**
+     * Test that the right message is shown in case ther is no phone number
+     */
     @Test
-    public void shouldToastForEmptyPhone() throws Exception {
+    public void shouldToastForEmptyPhone() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -160,8 +204,11 @@ public class RegisterFragmentTest {
                 R.string.empty_phone, activity)));
     }
 
+    /**
+     * Test the right message is shown on empty zip code
+     */
     @Test
-    public void shouldToastForEmptyZipCode() throws Exception {
+    public void shouldToastForEmptyZipCode() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -171,8 +218,11 @@ public class RegisterFragmentTest {
                 R.string.empty_zc, activity)));
     }
 
+    /**
+     * Test that the right message is shown on no date selected
+     */
     @Test
-    public void shouldToastForBirthDate() throws Exception {
+    public void shouldToastForBirthDate() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -183,8 +233,11 @@ public class RegisterFragmentTest {
                 R.string.empty_bd, activity)));
     }
 
+    /**
+     * Test that the right message is shown on empty password
+     */
     @Test
-    public void shouldToastForEmptyPassword() throws Exception {
+    public void shouldToastForEmptyPassword() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -196,8 +249,11 @@ public class RegisterFragmentTest {
                 R.string.empty_pass, activity)));
     }
 
+    /**
+     * Test that the right message is shown on empty password confirmation
+     */
     @Test
-    public void shouldToastForEmptyConfirm() throws Exception {
+    public void shouldToastForEmptyConfirm() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -210,8 +266,11 @@ public class RegisterFragmentTest {
                 R.string.empty_confirm, activity)));
     }
 
+    /**
+     * Test that the right message is shown on password mismatch
+     */
     @Test
-    public void shouldToastForPasswordMismatch() throws Exception {
+    public void shouldToastForPasswordMismatch() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -225,8 +284,11 @@ public class RegisterFragmentTest {
                 R.string.password_mismatch, activity)));
     }
 
+    /**
+     * Test that the right message is shown on invalid e-mail
+     */
     @Test
-    public void shouldToastForInvalidEmail() throws Exception {
+    public void shouldToastForInvalidEmail() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("ab.com");
@@ -240,6 +302,9 @@ public class RegisterFragmentTest {
                 R.string.invalid_email, activity)));
     }
 
+    /**
+     * Test that the progress dialog is shown if the log in form is correctly filled
+     */
     @Test
     public void shouldShowProgressDialogOnSubmit() {
         txtFirstName.setText("a");
@@ -255,6 +320,9 @@ public class RegisterFragmentTest {
         assertThat(pd, notNullValue());
     }
 
+    /**
+     * Test that the progress dialog is shown again on fragment recreation
+     */
     @Test
     public void shouldShowProgressDialogOnRestoreInstanceStateAfterSubmit() {
         txtFirstName.setText("a");
@@ -273,8 +341,11 @@ public class RegisterFragmentTest {
         assertThat(pd, notNullValue());
     }
 
+    /**
+     * Test that the Register Request Event is triggered when the form is correctly filled
+     */
     @Test
-    public void shouldCallLogInRequesOnFormSubmit() {
+    public void shouldCallRegisterRequestOnFormSubmit() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -287,10 +358,12 @@ public class RegisterFragmentTest {
         Mockito.verify(mBus, Mockito.times(1)).post(Mockito.isA(RegisterRequest.class));
     }
 
+    /**
+     * Test an alert dialog is shown on Network Error event
+     */
     @Test
     public void shouldShowDialogOnNetworkError() {
         NetworkError ne = new NetworkError();
-        ne.setError(RetrofitError.unexpectedError("", new Exception()));
         mBus.post(ne);
         AlertDialog alert = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(alert, notNullValue());
@@ -298,6 +371,9 @@ public class RegisterFragmentTest {
         assertThat(alert.isShowing(), equalTo(false));
     }
 
+    /**
+     * Test that the activity is finished on successful response and dialog click
+     */
     @Test
     public void shouldFinishOnRegisterSuccessAndDialogClick() {
         txtFirstName.setText("a");
@@ -322,8 +398,11 @@ public class RegisterFragmentTest {
         assertThat(Shadows.shadowOf(activity).isFinishing(), equalTo(true));
     }
 
+    /**
+     * Test an alert dialog is shown if a success event comes with no token and error status
+     */
     @Test
-    public void shouldShowDialogOnLogInSuccessWithStatus() {
+    public void shouldShowDialogOnRegisterSuccessWithStatus() {
         txtFirstName.setText("a");
         txtLastName.setText("b");
         txtEmail.setText("a@b.com");
@@ -346,6 +425,9 @@ public class RegisterFragmentTest {
         assertThat(alert.isShowing(), equalTo(false));
     }
 
+    /**
+     * Test the activity finishes on back button click
+     */
     @Test
     public void shouldFinishOnOptionsMenu() {
         RoboMenuItem tmi2 = new RoboMenuItem(android.R.id.home);

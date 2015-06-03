@@ -8,6 +8,9 @@ import android.view.MenuItem;
 
 import com.voiq.voiqtest.R;
 
+/**
+ * Register Activity, which implements the registration flow
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Implement back button
         if(item.getItemId() == android.R.id.home) {
             finish();
             return true;

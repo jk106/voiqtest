@@ -13,6 +13,8 @@ import dagger.Provides;
 
 /**
  * Created by juanchaparro on 31/05/15.
+ * Otto Event Bus module
+ * Injects the MainFragment, RegisterFragment and VoiqTestApplication, as they all need it
  */
 @Module(
         injects = {

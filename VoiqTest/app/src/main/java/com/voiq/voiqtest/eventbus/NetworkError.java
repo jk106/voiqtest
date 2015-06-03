@@ -4,16 +4,8 @@ import retrofit.RetrofitError;
 
 /**
  * Created by juanchaparro on 31/05/15.
+ * Event to notify a network issue with a request
  */
 public class NetworkError {
 
-    private RetrofitError error;
-
-    public RetrofitError getError() {
-        return error;
-    }
-
-    public void setError(RetrofitError error) {
-        this.error = error;
-    }
 }

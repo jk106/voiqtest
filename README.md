@@ -30,7 +30,7 @@ The usual "findviewbyid", "onclicklisteners", etc., are a real drag on code read
 
 General Architecture
 --------------------
-No real surprises here, the first screen has a fragment, just in case it is required somewhere else in the future, it validates the fields prior to sending the request. If the entered info is valid, it sends the request, keeping a progress dialog on the screen. If the request is succesful, the app will show the token screen. If not, the app will show an alert with the reason for failure.
+No real surprises here, the first screen has a fragment, just in case it is required somewhere else in the future, it validates the fields prior to sending the request. If the entered info is valid, it sends the request, keeping a progress dialog on the screen. If the request is successful, the app will show the token screen. If not, the app will show an alert with the reason for failure.
 
 The registration screen operates in a similar fashion. However, the three proposed spinners(combo boxes) seemed a little inefficient to me. On the one hand, just loading the adapters and info for the spinners could be bad, if not fault-prone. On the other hand, having the user fill the information for three spinners is bad UX, people don´t like to be entering lots of info in a single form. I decided to use a DatePickerDialog for it, I think it looks, and works better.
 

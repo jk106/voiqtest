@@ -25,10 +25,15 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Created by juanchaparro on 30/05/15.
+ * Test Suites for the TokenActivity
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class TokenActivityTest {
+
+    /**
+     * Inject the activity UI elements for the test suites.
+     */
 
     @InjectView(R.id.txtToken)
     EditText txtToken;
@@ -36,22 +41,33 @@ public class TokenActivityTest {
     @InjectView(R.id.btnLogout)
     Button btnLogout;
 
+    /**
+     * UUT
+     */
     private TokenActivity activity;
 
     @Before
     public void setUp() throws Exception {
-        // setup
+        /*
+        Create the activity and inject the UI elements with ButterKnife
+         */
         activity= Robolectric.buildActivity(TokenActivity.class).create().start().resume().get();
         ButterKnife.inject(this, activity);
     }
 
+    /**
+     * Test the activity finishes when the log out button is clicked
+     */
     @Test
-    public void shouldFinishOnLogOutClick() throws Exception {
+    public void shouldFinishOnLogOutClick() {
         // test
         btnLogout.performClick();
         assertThat(Shadows.shadowOf(activity).isFinishing(), equalTo(true));
     }
 
+    /**
+     * Test the activity shows the token coming in the intent
+     */
     @Test
     public void shouldDisplayToken()
     {

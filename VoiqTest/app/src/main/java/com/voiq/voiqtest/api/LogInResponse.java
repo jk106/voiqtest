@@ -4,8 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by juanchaparro on 31/05/15.
+ * Log In Response, to be serialized using Gson
  */
 public class LogInResponse {
+
+    /**
+     * The entire parameters are placed with @SerializedName annotations where required.
+     * The annotation is only required where camel-case names are not used by the backend,
+     * or where they correspond to reserved Java words.
+     * The getters and setters may come handy in further stages of the app development.
+     */
 
     @SerializedName("firstname")
     private String firstName;

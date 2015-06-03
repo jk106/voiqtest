@@ -15,11 +15,20 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
+/**
+ * Token Activity, which shows the token
+ */
 public class TokenActivity extends AppCompatActivity {
 
+    /**
+     * Token EditText field, which is disabled
+     */
     @InjectView(R.id.txtToken)
     EditText txtToken;
 
+    /**
+     * Log out button
+     */
     @InjectView(R.id.btnLogout)
     Button btnLogout;
 
@@ -27,20 +36,22 @@ public class TokenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
+        //Use ButterKnife, or the annotations won't cut it
         ButterKnife.inject(this);
         try {
             txtToken.setText(getIntent().getStringExtra("token"));
         }
         catch(Exception e)
         {
+            //Just in case there is no token, though this should rarely happen
             Log.e(getString(R.string.title_activity_token), e.getMessage());
         }
-        ButterKnife.inject(this);
     }
 
     @OnClick(R.id.btnLogout)
     public void onLogoutClick()
     {
+        // Dismiss the activity to "log out"
         finish();
     }
 }

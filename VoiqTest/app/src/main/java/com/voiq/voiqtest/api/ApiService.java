@@ -14,24 +14,46 @@ import retrofit.client.Response;
 
 /**
  * Created by juanchaparro on 31/05/15.
+ * Api Service to listen for events on the Event Bus, and respond accordingly
  */
 public class ApiService {
 
+    /**
+     * Endpoints for making API requests
+     */
     private VoiqEndpoints mEndpoints;
+
+    /**
+     * Event Bus instance. Notice that the injection is not annotated here, as the
+     * object graph will take care of that
+     */
     private Bus mBus;
 
+    /**
+     * Constructor
+     * @param endpoints Retrofit-powered REST client
+     * @param bus Event Bus instance
+     */
     public ApiService(VoiqEndpoints endpoints, Bus bus)
     {
         mEndpoints=endpoints;
         mBus=bus;
     }
 
+    /**
+     * Listen and respond to log in request events
+     * @param event The event containing the request parameters.
+     */
     @Subscribe
     public void onLogInRequest(LogInRequest event)
     {
+        /*
+        Perform the request and create a callback
+         */
         mEndpoints.LogIn(event.getEmail(), event.getPassword(), new Callback<LogInResponse>() {
             @Override
             public void success(LogInResponse logInResponse, Response response) {
+                //If all goes well, post the success event.
                 LogInSuccess lis= new LogInSuccess();
                 lis.setResponse(logInResponse);
                 mBus.post(lis);
@@ -39,8 +61,8 @@ public class ApiService {
 
             @Override
             public void failure(RetrofitError error) {
+                //If the request fails, send the network error event.
                 NetworkError ne= new NetworkError();
-                ne.setError(error);
                 mBus.post(ne);
             }
         });
@@ -64,7 +86,6 @@ public class ApiService {
                     @Override
                     public void failure(RetrofitError error) {
                         NetworkError ne= new NetworkError();
-                        ne.setError(error);
                         mBus.post(ne);
                     }
                 });
